@@ -32,14 +32,6 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder
-                .Entity<Task>()
-                .HasKey(t => t.Id);
-
-            modelBuilder
-                .Entity<Subject>()
-                .HasKey(t => t.Id);
         }
     }
 }
