@@ -1,0 +1,29 @@
+﻿@{
+    @model SubjectsViewModel
+}
+
+@{
+    if (Model.Username == "Gosho")
+    {
+        <h1>Subjects index view</h1>
+    }
+    else
+    {
+        <h1>Log in to continue</h1>
+    }
+}
+
+<p>@Model.TimeNow</p>
+
+<div>
+    <ul>
+        @{
+            foreach (var subject in Model.Subjects)
+            {
+                <li>
+                    @subject.Name
+                </li>
+            }
+        }
+    </ul>
+</div>
