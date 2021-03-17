@@ -22,14 +22,12 @@
         [HttpGet]
         public IActionResult Index()
         {
-            SubjectsViewModel subjectsViewModel = new SubjectsViewModel();
-
             List<SubjectViewModel> subjectsNames = dbContext.Subjects
                 .Select(subject => new SubjectViewModel
                 {
                     Name = subject.Name,
                 })
-                .Where(subject => subject.Name.Contains("ASP"))
+                //.Where(subject => subject.Name.Contains("ASP"))
                 .OrderBy(subject => subject.Name)
                 //.Skip(2)
                 //.Take(2)
@@ -38,6 +36,8 @@
             string username = "Gosho";
             DateTime timeNow = DateTime.UtcNow;
 
+            SubjectsViewModel subjectsViewModel = new SubjectsViewModel();
+
             subjectsViewModel.Subjects = subjectsNames;
             subjectsViewModel.Username = username;
             subjectsViewModel.TimeNow = timeNow;
@@ -45,6 +45,7 @@
             return View(subjectsViewModel);
         }
 
+        [HttpGet]
         public IActionResult All(int id = 123123, string name = "Default")
         {
             // var queryString = HttpContext.Request.QueryString.Value;
@@ -58,14 +59,22 @@
             return View("all", model);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
-            var randomNumber = new Random();
+            return View();
+        }
 
-            Subject subject = new Subject()
+        [HttpPost]
+        public IActionResult Create(SubjectBindingModel model)
+        {
+            if (ModelState.IsValid == false)
             {
-                Name = $"ASP {randomNumber.Next(0, 10)}",
-            };
+                return View("create", model);
+            }
+
+            Subject subject = new Subject();
+            subject.Name = model.Name;
 
             dbContext.Subjects.Add(subject);
             dbContext.SaveChanges();
@@ -73,6 +82,7 @@
             return RedirectToAction("index");
         }
 
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             Subject subject = dbContext.Subjects
@@ -86,6 +96,7 @@
             return RedirectToAction("index");
         }
 
+        [HttpGet]
         public IActionResult Update(int id)
         {
             Subject subject = dbContext.Subjects

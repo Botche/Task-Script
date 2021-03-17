@@ -20,6 +20,8 @@
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            base.OnConfiguring(optionsBuilder);
+
             if (optionsBuilder.IsConfigured == false)
             {
                 optionsBuilder
@@ -30,6 +32,11 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder
+                .Entity<Subject>()
+                .Property(s => s.Name)
+                .IsRequired();
         }
     }
 }
