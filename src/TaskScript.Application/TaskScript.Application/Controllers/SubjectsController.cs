@@ -8,7 +8,8 @@
 
     using TaskScript.Application.Data;
     using TaskScript.Application.Data.Models;
-    using TaskScript.Application.Models;
+    using TaskScript.Application.Models.Subjects.BindingModels;
+    using TaskScript.Application.Models.Subjects.ViewModels;
 
     public class SubjectsController : Controller
     {
@@ -83,8 +84,8 @@
         [HttpGet]
         public IActionResult Update(int id)
         {
-            SubjectUpdateBindingModel subject = this.dbContext.Subjects
-                .Select(s => new SubjectUpdateBindingModel
+            SubjectViewModel subject = this.dbContext.Subjects
+                .Select(s => new SubjectViewModel
                 {
                     Id = s.Id,
                     Name = s.Name

@@ -1,4 +1,4 @@
-﻿namespace TaskScript.Application.Models
+﻿namespace TaskScript.Application.Models.Subjects.ViewModels
 {
     public class SubjectViewModel
     {
