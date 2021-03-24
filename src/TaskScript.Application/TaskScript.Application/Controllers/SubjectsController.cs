@@ -48,6 +48,27 @@
         }
 
         [HttpGet]
+        public IActionResult Details(int id)
+        {
+            SubjectViewModel subject = this.dbContext.Subjects
+                .Select(s => new SubjectViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                })
+                .Where(s => s.Id == id)
+                .SingleOrDefault();
+
+            bool isSubjectNull = subject == null;
+            if (isSubjectNull)
+            {
+                return this.RedirectToRoute("index");
+            }
+
+            return this.View(subject);
+        }
+
+        [HttpGet]
         public IActionResult Create()
         {
             return this.View();
