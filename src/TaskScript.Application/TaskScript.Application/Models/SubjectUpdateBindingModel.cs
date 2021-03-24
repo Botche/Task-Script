@@ -1,10 +1,10 @@
-﻿namespace TaskScript.Application.Data.Models
+﻿namespace TaskScript.Application.Models
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Subject
+    public class SubjectUpdateBindingModel
     {
-        [Key]
+        [Required]
         public int Id { get; set; }
 
         [Required]

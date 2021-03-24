@@ -22,6 +22,14 @@
             {
                 <li>
                     @subject.Name
+                    |
+                    <a asp-controller="Subjects" asp-action="Update" asp-route-id="@subject.Id">
+                        Update
+                    </a>
+                    |
+                    <a asp-controller="Subjects" asp-action="Delete" asp-route-id="@subject.Id">
+                        Delete
+                    </a>
                 </li>
             }
         }

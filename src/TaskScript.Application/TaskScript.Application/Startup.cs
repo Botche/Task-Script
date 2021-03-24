@@ -48,11 +48,11 @@ namespace TaskScript.Application
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
 
-                var serviceProvider = app.ApplicationServices.CreateScope().ServiceProvider;
-                var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
-                if (dbContext.Database.EnsureCreated())
+                using (var serviceScope = app.ApplicationServices.CreateScope())
                 {
-                    // TODO: Migrations
+                    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                    dbContext.Database.Migrate();
                 }
             }
             else
