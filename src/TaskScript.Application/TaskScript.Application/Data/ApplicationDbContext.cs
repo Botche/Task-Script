@@ -1,9 +1,5 @@
 ﻿namespace TaskScript.Application.Data
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -26,14 +22,14 @@
 
             builder
                 .Entity<Subject>()
-                .HasIndex(s => s.Name)
+                .HasIndex(subject => subject.Name)
                 .IsUnique();
 
             builder
                 .Entity<Lesson>()
-                .HasOne(l => l.Subject)
-                .WithMany(s => s.Lessons)
-                .HasForeignKey(l => l.SubjectId);
+                .HasOne(lesson => lesson.Subject)
+                .WithMany(subject => subject.Lessons)
+                .HasForeignKey(lesson => lesson.SubjectId);
         }
     }
 }

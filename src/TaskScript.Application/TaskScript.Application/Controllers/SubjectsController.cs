@@ -78,7 +78,7 @@
         [AutoValidateAntiforgeryToken]
         public IActionResult Create(SubjectBindingModel model)
         {
-            if (ModelState.IsValid == false)
+            if (this.ModelState.IsValid == false)
             {
                 return this.View("create", model);
             }
@@ -127,6 +127,11 @@
         [AutoValidateAntiforgeryToken]
         public IActionResult Update(SubjectUpdateBindingModel model)
         {
+            if (this.ModelState.IsValid == false)
+            {
+                return this.View("create", model);
+            }
+
             Subject subject = this.dbContext.Subjects
                 .Where(s => s.Id == model.Id)
                 .SingleOrDefault();
