@@ -13,7 +13,7 @@
 
     public class SubjectsController : Controller
     {
-        private ApplicationDbContext dbContext;
+        private readonly ApplicationDbContext dbContext;
 
         public SubjectsController(ApplicationDbContext dbContext)
         {

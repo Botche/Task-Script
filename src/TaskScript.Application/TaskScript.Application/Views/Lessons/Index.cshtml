@@ -1,0 +1,50 @@
+﻿@model IEnumerable<GetAllLessonsViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+
+    bool areLessonInDatabase = Model.Count() != 0;
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@if (areLessonInDatabase)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    Action links
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (GetAllLessonsViewModel lesson in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => lesson.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = lesson.Id })
+                        |
+                        @Html.ActionLink("Details", "Details", new { id = lesson.Id })
+                        |
+                        @Html.ActionLink("Delete", "Delete", new { id = lesson.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No lessons to display.</p>
+}
