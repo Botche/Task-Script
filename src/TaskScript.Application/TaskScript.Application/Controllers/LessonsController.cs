@@ -1,9 +1,7 @@
 ﻿namespace TaskScript.Application.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
 
@@ -37,8 +35,8 @@
 
         public IActionResult Details(int id)
         {
-            DetailsLessonViewModel lesson = this.dbContext.Lessons
-                .Select(lesson => new DetailsLessonViewModel
+            LessonViewModel lesson = this.dbContext.Lessons
+                .Select(lesson => new LessonViewModel
                 {
                     Id = lesson.Id,
                     Name = lesson.Name,
@@ -72,6 +70,12 @@
                 .OrderBy(subject => subject.Name)
                 .ToList();
 
+            bool areSubjectsEmpty = subjects.Count() == 0;
+            if (areSubjectsEmpty)
+            {
+                return this.RedirectToAction("index");
+            }
+
             ViewBag.Subjects = subjects;
 
             return this.View();
@@ -95,6 +99,75 @@
             lesson.SubjectId = model.SubjectId;
 
             this.dbContext.Lessons.Add(lesson);
+            this.dbContext.SaveChanges();
+
+            return this.RedirectToAction("index");
+        }
+
+        public IActionResult Update(int id)
+        {
+            UpdateLessonBindingModel lesson = this.dbContext.Lessons
+                .Select(l => new UpdateLessonBindingModel
+                {
+                    Id = l.Id,
+                    Name = l.Name,
+                    Seats = l.Seats,
+                    Hours = l.Hours,
+                    IsOnline = l.IsOnline,
+                    PresentationDate = l.PresentationDate,
+                    SubjectId = l.SubjectId,
+                })
+                .Where(l => l.Id == id)
+                .SingleOrDefault();
+
+            IEnumerable<IdNameViewModel> subjects = this.dbContext.Subjects
+                .Select(subject => new IdNameViewModel
+                {
+                    Id = subject.Id,
+                    Name = subject.Name,
+                })
+                .OrderBy(subject => subject.Name)
+                .ToList();
+
+            bool isLessonNull = lesson == null;
+            bool areSubjectsEmpty = subjects.Count() == 0;
+            if (isLessonNull || areSubjectsEmpty)
+            {
+                return this.RedirectToAction("index");
+            }
+
+            ViewBag.Subjects = subjects;
+
+            return this.View(lesson);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(UpdateLessonBindingModel model)
+        {
+            if (this.ModelState.IsValid == false)
+            {
+                return this.View(model);
+            }
+
+            Lesson lesson = this.dbContext.Lessons
+                .Where(l => l.Id == model.Id)
+                .SingleOrDefault();
+
+            bool isLessonNull = lesson == null;
+            if (isLessonNull)
+            {
+                return this.RedirectToAction("index");
+            }
+
+            lesson.Name = model.Name;
+            lesson.IsOnline = model.IsOnline;
+            lesson.Hours = model.Hours;
+            lesson.PresentationDate = model.PresentationDate;
+            lesson.Seats = model.Seats;
+            lesson.SubjectId = model.SubjectId;
+
+            this.dbContext.Lessons.Update(lesson);
             this.dbContext.SaveChanges();
 
             return this.RedirectToAction("index");

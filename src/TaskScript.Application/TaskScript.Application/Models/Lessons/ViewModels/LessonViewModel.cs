@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel;
 
-    public class DetailsLessonViewModel
+    public class LessonViewModel
     {
         public int Id { get; set; }
 

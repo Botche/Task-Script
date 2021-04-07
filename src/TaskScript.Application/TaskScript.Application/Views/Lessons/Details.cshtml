@@ -1,4 +1,4 @@
-﻿@model DetailsLessonViewModel
+﻿@model LessonViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -73,7 +73,7 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) 
+    @Html.ActionLink("Update", "Update", new { id = Model.Id }) 
     |
     @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) 
     |
