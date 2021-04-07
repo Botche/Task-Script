@@ -3,8 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
 
     using TaskScript.Application.Data;
     using TaskScript.Application.Data.Models;
@@ -76,7 +79,7 @@
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Create(SubjectBindingModel model)
+        public async Task<IActionResult> Create(SubjectBindingModel model)
         {
             if (this.ModelState.IsValid == false)
             {
@@ -96,8 +99,8 @@
             Subject subject = new Subject();
             subject.Name = model.Name;
 
-            this.dbContext.Subjects.Add(subject);
-            this.dbContext.SaveChanges();
+            await this.dbContext.Subjects.AddAsync(subject);
+            await this.dbContext.SaveChangesAsync();
 
             return this.RedirectToAction("index");
         }
@@ -125,7 +128,7 @@
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Update(SubjectUpdateBindingModel model)
+        public async Task<IActionResult> Update(SubjectUpdateBindingModel model)
         {
             if (this.ModelState.IsValid == false)
             {
@@ -144,13 +147,13 @@
 
             subject.Name = model.Name;
             this.dbContext.Subjects.Update(subject);
-            this.dbContext.SaveChanges();
+            await this.dbContext.SaveChangesAsync();
 
             return this.RedirectToAction("index");
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             Subject subject = this.dbContext.Subjects
                 .Where(subject => subject.Id == id)
@@ -164,7 +167,7 @@
             }
 
             this.dbContext.Subjects.Remove(subject);
-            this.dbContext.SaveChanges();
+            await this.dbContext.SaveChangesAsync();
 
             return this.RedirectToAction("index");
         }

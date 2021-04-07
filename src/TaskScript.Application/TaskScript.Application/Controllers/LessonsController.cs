@@ -1,7 +1,9 @@
 ﻿namespace TaskScript.Application.Controllers
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +36,7 @@
         }
 
         public IActionResult Details(int id)
-        {
+        { 
             LessonViewModel lesson = this.dbContext.Lessons
                 .Select(lesson => new LessonViewModel
                 {
@@ -83,7 +85,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateLessonBindingModel model)
+        public async Task<IActionResult> Create(CreateLessonBindingModel model)
         {
             if (this.ModelState.IsValid == false)
             {
@@ -98,8 +100,8 @@
             lesson.Seats = model.Seats;
             lesson.SubjectId = model.SubjectId;
 
-            this.dbContext.Lessons.Add(lesson);
-            this.dbContext.SaveChanges();
+            await this.dbContext.Lessons.AddAsync(lesson);
+            await this.dbContext.SaveChangesAsync();
 
             return this.RedirectToAction("index");
         }
@@ -143,7 +145,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(UpdateLessonBindingModel model)
+        public async Task<IActionResult> Update(UpdateLessonBindingModel model)
         {
             if (this.ModelState.IsValid == false)
             {
@@ -168,12 +170,12 @@
             lesson.SubjectId = model.SubjectId;
 
             this.dbContext.Lessons.Update(lesson);
-            this.dbContext.SaveChanges();
+            await this.dbContext.SaveChangesAsync();
 
             return this.RedirectToAction("index");
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             Lesson lesson = this.dbContext.Lessons
                 .Where(lesson => lesson.Id == id)
@@ -186,7 +188,7 @@
             }
 
             this.dbContext.Lessons.Remove(lesson);
-            this.dbContext.SaveChanges();
+            await this.dbContext.SaveChangesAsync();
 
             return this.RedirectToAction("index");
         }
