@@ -2,48 +2,35 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
 
-    using TaskScript.Application.Data;
     using TaskScript.Application.Data.Models;
     using TaskScript.Application.Models.Subjects.BindingModels;
     using TaskScript.Application.Models.Subjects.ViewModels;
+    using TaskScript.Application.Services.Interfaces;
 
     public class SubjectsController : Controller
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ISubjectsService subjectsService;
 
-        public SubjectsController(ApplicationDbContext dbContext)
+        public SubjectsController(ISubjectsService subjectsService)
         {
-            this.dbContext = dbContext;
+            this.subjectsService = subjectsService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            List<SubjectViewModel> subjectsNames = this.dbContext.Subjects
-                .Select(subject => new SubjectViewModel
-                {
-                    Id = subject.Id,
-                    Name = subject.Name,
-                })
-                //.Where(subject => subject.Name.Contains("ASP"))
-                .OrderBy(subject => subject.Name)
-                //.Skip(2)
-                //.Take(2)
-                .ToList();
+            IEnumerable<IdNameViewModel> subjects = this.subjectsService.GetAll();
 
             string username = "Gosho";
             DateTime timeNow = DateTime.UtcNow;
 
             SubjectsViewModel subjectsViewModel = new SubjectsViewModel();
 
-            subjectsViewModel.Subjects = subjectsNames;
+            subjectsViewModel.Subjects = subjects;
             subjectsViewModel.Username = username;
             subjectsViewModel.TimeNow = timeNow;
 
@@ -53,14 +40,7 @@
         [HttpGet]
         public IActionResult Details(int id)
         {
-            SubjectViewModel subject = this.dbContext.Subjects
-                .Select(s => new SubjectViewModel
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                })
-                .Where(s => s.Id == id)
-                .SingleOrDefault();
+            SubjectViewModel subject = this.subjectsService.GetForViewById(id);
 
             bool isSubjectNull = subject == null;
             if (isSubjectNull)
@@ -86,9 +66,7 @@
                 return this.View("create", model);
             }
 
-            Subject subjectFromDb = this.dbContext.Subjects
-                .Where(s => s.Name == model.Name)
-                .SingleOrDefault();
+            Subject subjectFromDb = this.subjectsService.GetByName(model.Name);
 
             bool isSubjectAlreadyInDb = subjectFromDb != null;
             if (isSubjectAlreadyInDb)
@@ -96,11 +74,7 @@
                 return this.RedirectToAction("index");
             }
 
-            Subject subject = new Subject();
-            subject.Name = model.Name;
-
-            await this.dbContext.Subjects.AddAsync(subject);
-            await this.dbContext.SaveChangesAsync();
+            await this.subjectsService.CreateAsync(model);
 
             return this.RedirectToAction("index");
         }
@@ -108,14 +82,7 @@
         [HttpGet]
         public IActionResult Update(int id)
         {
-            SubjectViewModel subject = this.dbContext.Subjects
-                .Select(s => new SubjectViewModel
-                {
-                    Id = s.Id,
-                    Name = s.Name
-                })
-                .Where(s => s.Id == id)
-                .SingleOrDefault();
+            SubjectViewModel subject = this.subjectsService.GetForViewById(id);
 
             bool isSubjectNull = subject == null;
             if (isSubjectNull)
@@ -135,19 +102,7 @@
                 return this.View("create", model);
             }
 
-            Subject subject = this.dbContext.Subjects
-                .Where(s => s.Id == model.Id)
-                .SingleOrDefault();
-
-            bool isSubjectNull = subject == null;
-            if (isSubjectNull)
-            {
-                return this.View(model);
-            }
-
-            subject.Name = model.Name;
-            this.dbContext.Subjects.Update(subject);
-            await this.dbContext.SaveChangesAsync();
+            await this.subjectsService.UpdateAsync(model);
 
             return this.RedirectToAction("index");
         }
@@ -155,19 +110,7 @@
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            Subject subject = this.dbContext.Subjects
-                .Where(subject => subject.Id == id)
-                .SingleOrDefault();
-            //.SingleOrDefault(subject => subject.Id == id);
-
-            bool isSubjectNull = subject == null;
-            if (isSubjectNull)
-            {
-                return this.RedirectToAction("index");
-            }
-
-            this.dbContext.Subjects.Remove(subject);
-            await this.dbContext.SaveChangesAsync();
+            await this.subjectsService.RemoveAsync(id);
 
             return this.RedirectToAction("index");
         }

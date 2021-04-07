@@ -1,7 +1,6 @@
 ﻿namespace TaskScript.Application.Controllers
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -12,14 +11,17 @@
     using TaskScript.Application.Models.Lessons.BindingModels;
     using TaskScript.Application.Models.Lessons.ViewModels;
     using TaskScript.Application.Models.Subjects.ViewModels;
+    using TaskScript.Application.Services.Interfaces;
 
     public class LessonsController : Controller
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly ISubjectsService subjectsService;
 
-        public LessonsController(ApplicationDbContext dbContext)
+        public LessonsController(ApplicationDbContext dbContext, ISubjectsService subjectsService)
         {
             this.dbContext = dbContext;
+            this.subjectsService = subjectsService;
         }
 
         public IActionResult Index()
@@ -63,14 +65,7 @@
         [HttpGet]
         public IActionResult Create()
         {
-            IEnumerable<IdNameViewModel> subjects = this.dbContext.Subjects
-                .Select(subject => new IdNameViewModel
-                {
-                    Id = subject.Id,
-                    Name = subject.Name,
-                })
-                .OrderBy(subject => subject.Name)
-                .ToList();
+            IEnumerable<IdNameViewModel> subjects = this.subjectsService.GetAll();
 
             bool areSubjectsEmpty = subjects.Count() == 0;
             if (areSubjectsEmpty)
@@ -122,14 +117,7 @@
                 .Where(l => l.Id == id)
                 .SingleOrDefault();
 
-            IEnumerable<IdNameViewModel> subjects = this.dbContext.Subjects
-                .Select(subject => new IdNameViewModel
-                {
-                    Id = subject.Id,
-                    Name = subject.Name,
-                })
-                .OrderBy(subject => subject.Name)
-                .ToList();
+            IEnumerable<IdNameViewModel> subjects = this.subjectsService.GetAll();
 
             bool isLessonNull = lesson == null;
             bool areSubjectsEmpty = subjects.Count() == 0;

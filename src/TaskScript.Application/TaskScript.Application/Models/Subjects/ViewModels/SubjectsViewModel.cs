@@ -5,7 +5,7 @@
 
     public class SubjectsViewModel
     {
-        public List<SubjectViewModel> Subjects { get; set; }
+        public IEnumerable<IdNameViewModel> Subjects { get; set; }
 
         public string Username { get; set; }
 

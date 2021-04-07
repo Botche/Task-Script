@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using TaskScript.Application.Data;
+using TaskScript.Application.Services;
+using TaskScript.Application.Services.Interfaces;
 
 namespace TaskScript.Application
 {
@@ -38,6 +40,8 @@ namespace TaskScript.Application
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+
+            services.AddScoped<ISubjectsService, SubjectsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
