@@ -1,5 +1,7 @@
-﻿@{
-    @model SubjectsViewModel
+﻿@model SubjectsViewModel
+
+@{
+    ViewData["Title"] = "All subjects";
 }
 
 @{
@@ -16,7 +18,11 @@
 <p>@Model.TimeNow</p>
 
 <div>
-    <ul>
+    <div>
+        <a class="btn btn-outline-primary" asp-action="Create">Create subject</a>
+    </div>
+
+    <ul class="mt-3">
         @{
             foreach (var subject in Model.Subjects)
             {

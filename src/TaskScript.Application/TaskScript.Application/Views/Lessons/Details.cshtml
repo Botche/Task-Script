@@ -1,7 +1,7 @@
 ﻿@model LessonViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Name;
 
     bool isPresentationDateNull = Model.PresentationDate == null;
     bool areSeatsNull = Model.Seats == null;
