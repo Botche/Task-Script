@@ -37,11 +37,12 @@ namespace TaskScript.Application
                 );
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddControllersWithViews();
 
-            services.AddScoped<ISubjectsService, SubjectsService>();
+            RegisterDatabaseServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +81,12 @@ namespace TaskScript.Application
                     pattern: "{controller=Home}/{action=Index}/{id:int?}");
                 endpoints.MapRazorPages();
             });
+        }
+
+        private static void RegisterDatabaseServices(IServiceCollection services)
+        {
+            services.AddScoped<ISubjectsService, SubjectsService>();
+            services.AddScoped<ILessonsService, LessonsService>();
         }
     }
 }

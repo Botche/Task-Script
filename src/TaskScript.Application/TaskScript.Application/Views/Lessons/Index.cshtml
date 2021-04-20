@@ -8,9 +8,12 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (this.User.Identity.IsAuthenticated)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
 @if (areLessonInDatabase)
 {
@@ -33,15 +36,18 @@
                         @Html.DisplayFor(modelItem => lesson.Name)
                     </td>
                     <td>
-                        @Html.ActionLink("Update", "Update", new { id = lesson.Id })
-                        |
                         @Html.ActionLink("Details", "Details", new { id = lesson.Id })
-                        |
-                        @Html.ActionLink("Delete", "Delete", new { id = lesson.Id })
+                        @if (this.User.Identity.IsAuthenticated)
+                        {
+                            <span>|</span>
+                            @Html.ActionLink("Update", "Update", new { id = lesson.Id })
+                            <span>|</span>
+                            @Html.ActionLink("Delete", "Delete", new { id = lesson.Id })
+                        }
                     </td>
                 </tr>
             }
-        </tbody>
+</tbody>
     </table>
 }
 else
