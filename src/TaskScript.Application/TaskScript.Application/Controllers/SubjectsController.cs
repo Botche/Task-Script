@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using TaskScript.Application.Data.Models;
@@ -52,12 +53,14 @@
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return this.View();
         }
 
         [HttpPost]
+        [Authorize]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create(SubjectBindingModel model)
         {
@@ -80,6 +83,7 @@
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Update(int id)
         {
             SubjectViewModel subject = this.subjectsService.GetForViewById(id);
@@ -94,6 +98,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(SubjectUpdateBindingModel model)
         {
@@ -108,6 +113,7 @@
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             await this.subjectsService.RemoveAsync(id);

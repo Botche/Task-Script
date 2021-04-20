@@ -12,6 +12,14 @@
 
     public class SubjectsService : ISubjectsService
     {
+        // Order
+        // 1. CONST
+        // 2. Private fields
+        // 3. Construtors
+        // 4. Properties
+        // 5. Public Methods
+        // 6. Private method
+
         private readonly ApplicationDbContext dbContext;
 
         public SubjectsService(ApplicationDbContext dbContext)
