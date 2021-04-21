@@ -4,10 +4,10 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using TaskScript.Application.Areas.Learning.Models.Subjects.BindingModels;
+    using TaskScript.Application.Areas.Learning.Models.Subjects.ViewModels;
     using TaskScript.Application.Data;
     using TaskScript.Application.Data.Models;
-    using TaskScript.Application.Models.Subjects.BindingModels;
-    using TaskScript.Application.Models.Subjects.ViewModels;
     using TaskScript.Application.Services.Interfaces;
 
     public class SubjectsService : ISubjectsService

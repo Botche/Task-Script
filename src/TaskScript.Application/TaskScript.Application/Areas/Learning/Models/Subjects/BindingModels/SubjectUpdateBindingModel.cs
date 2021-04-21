@@ -1,4 +1,4 @@
-﻿namespace TaskScript.Application.Models.Subjects.BindingModels
+﻿namespace TaskScript.Application.Areas.Learning.Models.Subjects.BindingModels
 {
     using System.ComponentModel.DataAnnotations;
 

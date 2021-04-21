@@ -1,4 +1,4 @@
-﻿namespace TaskScript.Application.Models.Subjects.ViewModels
+﻿namespace TaskScript.Application.Areas.Learning.Models.Subjects.ViewModels
 {
     using System;
     using System.Collections.Generic;

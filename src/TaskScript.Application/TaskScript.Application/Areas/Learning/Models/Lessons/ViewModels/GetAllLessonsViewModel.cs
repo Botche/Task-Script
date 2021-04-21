@@ -1,4 +1,4 @@
-﻿namespace TaskScript.Application.Models.Lessons.ViewModels
+﻿namespace TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels
 {
     public class GetAllLessonsViewModel
     {

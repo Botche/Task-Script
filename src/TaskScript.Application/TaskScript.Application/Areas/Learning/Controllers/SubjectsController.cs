@@ -7,9 +7,9 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using TaskScript.Application.Areas.Learning.Models.Subjects.BindingModels;
+    using TaskScript.Application.Areas.Learning.Models.Subjects.ViewModels;
     using TaskScript.Application.Data.Models;
-    using TaskScript.Application.Models.Subjects.BindingModels;
-    using TaskScript.Application.Models.Subjects.ViewModels;
     using TaskScript.Application.Services.Interfaces;
 
     public class SubjectsController : LearningController

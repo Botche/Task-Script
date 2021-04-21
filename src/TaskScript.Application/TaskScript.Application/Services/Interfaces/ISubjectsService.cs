@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using TaskScript.Application.Areas.Learning.Models.Subjects.BindingModels;
+    using TaskScript.Application.Areas.Learning.Models.Subjects.ViewModels;
     using TaskScript.Application.Data.Models;
-    using TaskScript.Application.Models.Subjects.BindingModels;
-    using TaskScript.Application.Models.Subjects.ViewModels;
 
     public interface ISubjectsService
     {

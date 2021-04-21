@@ -4,10 +4,10 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using TaskScript.Application.Areas.Learning.Models.Lessons.BindingModels;
+    using TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels;
     using TaskScript.Application.Data;
     using TaskScript.Application.Data.Models;
-    using TaskScript.Application.Models.Lessons.BindingModels;
-    using TaskScript.Application.Models.Lessons.ViewModels;
     using TaskScript.Application.Services.Interfaces;
 
     public class LessonsService : ILessonsService
