@@ -78,8 +78,12 @@
     {
         @Html.ActionLink("Update", "Update", new { id = Model.Id })
         <span>|</span>
-        @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
-        <span>|</span>
+
+        @if (this.User.IsInRole(RolesConstants.AdminRoleName))
+        {
+            @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+            <span>|</span>
+        }
     }
     <a asp-action="Index">Back to List</a>
 </div>

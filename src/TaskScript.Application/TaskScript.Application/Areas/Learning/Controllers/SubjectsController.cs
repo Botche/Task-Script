@@ -9,6 +9,7 @@
 
     using TaskScript.Application.Areas.Learning.Models.Subjects.BindingModels;
     using TaskScript.Application.Areas.Learning.Models.Subjects.ViewModels;
+    using TaskScript.Application.Constants;
     using TaskScript.Application.Data.Models;
     using TaskScript.Application.Services.Interfaces;
 
@@ -113,7 +114,7 @@
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = RolesConstants.AdminRoleName)]
         public async Task<IActionResult> Delete(int id)
         {
             await this.subjectsService.RemoveAsync(id);

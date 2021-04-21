@@ -41,8 +41,12 @@
                         {
                             <span>|</span>
                             @Html.ActionLink("Update", "Update", new { id = lesson.Id })
-                            <span>|</span>
-                            @Html.ActionLink("Delete", "Delete", new { id = lesson.Id })
+
+                            @if (this.User.IsInRole(RolesConstants.AdminRoleName))
+                            {
+                                <span>|</span>
+                                @Html.ActionLink("Delete", "Delete", new { id = lesson.Id })
+                            }
                         }
                     </td>
                 </tr>

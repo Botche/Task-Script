@@ -38,10 +38,14 @@
                         <a asp-controller="Subjects" asp-action="Update" asp-route-id="@subject.Id">
                             Update
                         </a>
-                        <span>|</span>
-                        <a asp-controller="Subjects" asp-action="Delete" asp-route-id="@subject.Id">
-                            Delete
-                        </a>
+
+                        @if (this.User.IsInRole(RolesConstants.AdminRoleName))
+                        {
+                            <span>|</span>
+                            <a asp-controller="Subjects" asp-action="Delete" asp-route-id="@subject.Id">
+                                Delete
+                            </a>
+                        }
                     }
                 </li>
             }

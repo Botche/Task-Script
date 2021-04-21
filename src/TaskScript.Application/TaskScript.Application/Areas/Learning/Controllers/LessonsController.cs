@@ -10,6 +10,7 @@
     using TaskScript.Application.Areas.Learning.Models.Lessons.BindingModels;
     using TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels;
     using TaskScript.Application.Areas.Learning.Models.Subjects.ViewModels;
+    using TaskScript.Application.Constants;
     using TaskScript.Application.Data;
     using TaskScript.Application.Data.Models;
     using TaskScript.Application.Services.Interfaces;
@@ -115,7 +116,7 @@
             return this.RedirectToAction("index");
         }
 
-        [Authorize]
+        [Authorize(Roles = RolesConstants.AdminRoleName)]
         public async Task<IActionResult> Delete(int id)
         {
             bool isDeleted = await this.lessonsService.DeleteAsync(id);
