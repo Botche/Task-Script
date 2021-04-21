@@ -1,4 +1,4 @@
-﻿namespace TaskScript.Application.Controllers
+﻿namespace TaskScript.Application.Areas.Learning.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,7 @@
     using TaskScript.Application.Models.Subjects.ViewModels;
     using TaskScript.Application.Services.Interfaces;
 
-    public class SubjectsController : Controller
+    public class SubjectsController : LearningController
     {
         private readonly ISubjectsService subjectsService;
 

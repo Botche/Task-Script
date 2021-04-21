@@ -1,4 +1,4 @@
-﻿namespace TaskScript.Application.Controllers
+﻿namespace TaskScript.Application.Areas.Learning.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -14,15 +14,13 @@
     using TaskScript.Application.Models.Subjects.ViewModels;
     using TaskScript.Application.Services.Interfaces;
 
-    public class LessonsController : Controller
+    public class LessonsController : LearningController
     {
-        private readonly ApplicationDbContext dbContext;
         private readonly ISubjectsService subjectsService;
         private readonly ILessonsService lessonsService;
 
-        public LessonsController(ApplicationDbContext dbContext, ISubjectsService subjectsService, ILessonsService lessonsService)
+        public LessonsController(ISubjectsService subjectsService, ILessonsService lessonsService)
         {
-            this.dbContext = dbContext;
             this.subjectsService = subjectsService;
             this.lessonsService = lessonsService;
         }

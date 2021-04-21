@@ -77,6 +77,9 @@ namespace TaskScript.Application
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area}/{controller}/{action=Index}/{id:int?}");
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id:int?}");
                 endpoints.MapRazorPages();
