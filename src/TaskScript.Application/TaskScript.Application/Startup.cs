@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using TaskScript.Application.Data;
+using TaskScript.Application.Data.Seed;
 using TaskScript.Application.Services;
 using TaskScript.Application.Services.Interfaces;
 
@@ -59,6 +60,9 @@ namespace TaskScript.Application
                     var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
                     dbContext.Database.Migrate();
+
+                    ApplicationDbContextSeeder seeder = new ApplicationDbContextSeeder(serviceScope.ServiceProvider);
+                    seeder.SeedDatabaseAsync().GetAwaiter().GetResult();
                 }
             }
             else
