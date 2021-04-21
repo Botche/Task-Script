@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] | TaskScript</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/toastr/toastr.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -51,8 +52,27 @@
             &copy; 2021 - TaskScript.Application - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    <script type="text/javascript">
+        document.querySelector('body').onload = function checkIfNotificationMessageIsGiven() {
+            if ('@this.TempData[NotificationsConstants.SuccessNotification]') {
+                toastr.success('@this.TempData[NotificationsConstants.SuccessNotification]');
+            }
+            if ('@this.TempData[NotificationsConstants.ErrorNotification]') {
+                toastr.error('@this.TempData[NotificationsConstants.ErrorNotification]');
+            }
+            if ('@this.TempData[NotificationsConstants.WarningNotification]') {
+                toastr.warning('@this.TempData[NotificationsConstants.WarningNotification]');
+            }
+            if ('@this.TempData[NotificationsConstants.InfoNotification]') {
+                toastr.info('@this.TempData[NotificationsConstants.InfoNotification]');
+            }
+        };
+    </script>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
