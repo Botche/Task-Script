@@ -10,6 +10,8 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
 
+    using TaskScript.Application.Constants;
+
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
@@ -84,6 +86,7 @@
                     _logger.LogInformation("User created a new account with password.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    await this._userManager.AddToRoleAsync(user, RolesConstants.UserRoleName);
                     return LocalRedirect(returnUrl);
                 }
 
