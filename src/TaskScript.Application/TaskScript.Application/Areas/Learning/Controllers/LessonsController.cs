@@ -58,7 +58,7 @@
                 return this.RedirectToAction("index");
             }
 
-            ViewBag.Subjects = subjects;
+            this.ViewBag.Subjects = subjects;
 
             return this.View();
         }
@@ -70,10 +70,12 @@
         {
             if (this.ModelState.IsValid == false)
             {
+                this.TempData[NotificationsConstants.ErrorNotification] = "Something went wrong";
                 return this.RedirectToAction("create");
             }
 
             await this.lessonsService.CreateAsync(model);
+            this.TempData[NotificationsConstants.SuccessNotification] = NotificationsConstants.SuccessfullyAddedLesson;
 
             return this.RedirectToAction("index");
         }
