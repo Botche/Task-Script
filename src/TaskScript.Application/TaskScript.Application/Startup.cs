@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 
 using TaskScript.Application.Data;
 using TaskScript.Application.Data.Seed;
+using TaskScript.Application.Infrastructure.Middlewares;
 using TaskScript.Application.Services;
 using TaskScript.Application.Services.Interfaces;
 
@@ -64,6 +65,9 @@ namespace TaskScript.Application
                     ApplicationDbContextSeeder seeder = new ApplicationDbContextSeeder(serviceScope.ServiceProvider);
                     seeder.SeedDatabaseAsync().GetAwaiter().GetResult();
                 }
+
+                // Custom error handling only for development
+                app.UseMiddleware<GlobalExceptionMiddleware>();
             }
             else
             {
@@ -71,6 +75,7 @@ namespace TaskScript.Application
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
