@@ -98,13 +98,9 @@
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [ModelStateValidationFilter]
         public async Task<IActionResult> Update(UpdateLessonBindingModel model)
         {
-            if (this.ModelState.IsValid == false)
-            {
-                return this.View(model);
-            }
-
             bool isUpdated = await this.lessonsService.UpdateAsync(model);
             if (isUpdated == false)
             {

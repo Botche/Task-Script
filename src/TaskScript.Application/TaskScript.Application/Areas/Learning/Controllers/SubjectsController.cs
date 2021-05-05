@@ -11,6 +11,7 @@
     using TaskScript.Application.Areas.Learning.Models.Subjects.ViewModels;
     using TaskScript.Application.Constants;
     using TaskScript.Application.Data.Models;
+    using TaskScript.Application.Infrastructure.Filters;
     using TaskScript.Application.Services.Interfaces;
 
     public class SubjectsController : LearningController
@@ -63,13 +64,9 @@
         [HttpPost]
         [Authorize]
         [AutoValidateAntiforgeryToken]
+        [ModelStateValidationFilter]
         public async Task<IActionResult> Create(SubjectBindingModel model)
         {
-            if (this.ModelState.IsValid == false)
-            {
-                return this.View("create", model);
-            }
-
             Subject subjectFromDb = this.subjectsService.GetByName(model.Name);
 
             bool isSubjectAlreadyInDb = subjectFromDb != null;
@@ -101,13 +98,9 @@
         [HttpPost]
         [Authorize]
         [AutoValidateAntiforgeryToken]
+        [ModelStateValidationFilter]
         public async Task<IActionResult> Update(SubjectUpdateBindingModel model)
         {
-            if (this.ModelState.IsValid == false)
-            {
-                return this.View("create", model);
-            }
-
             await this.subjectsService.UpdateAsync(model);
 
             return this.RedirectToAction("index");
