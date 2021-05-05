@@ -1,5 +1,3 @@
-using System;
-
 namespace TaskScript.Application.Models
 {
     public class ErrorViewModel

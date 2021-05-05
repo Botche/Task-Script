@@ -28,7 +28,7 @@
 
             await userManager.CreateAsync(user, UsersConstants.UserPassword);
             await userManager.CreateAsync(admin, UsersConstants.AdminPassword);
-        
+
             await userManager.AddToRoleAsync(admin, RolesConstants.AdminRoleName);
             await userManager.AddToRoleAsync(user, RolesConstants.UserRoleName);
         }

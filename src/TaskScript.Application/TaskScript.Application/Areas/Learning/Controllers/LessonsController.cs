@@ -11,8 +11,6 @@
     using TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels;
     using TaskScript.Application.Areas.Learning.Models.Subjects.ViewModels;
     using TaskScript.Application.Constants;
-    using TaskScript.Application.Data;
-    using TaskScript.Application.Data.Models;
     using TaskScript.Application.Infrastructure.Filters;
     using TaskScript.Application.Services.Interfaces;
 
@@ -71,8 +69,8 @@
         public async Task<IActionResult> Create(CreateLessonBindingModel model)
         {
             await this.lessonsService.CreateAsync(model);
-            this.TempData[NotificationsConstants.SuccessNotification] = NotificationsConstants.SuccessfullyAddedLesson;
 
+            this.TempData[NotificationsConstants.SuccessNotification] = NotificationsConstants.SuccessfullyAddedLesson;
             return this.RedirectToAction("index");
         }
 

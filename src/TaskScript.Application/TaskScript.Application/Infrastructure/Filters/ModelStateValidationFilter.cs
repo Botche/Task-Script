@@ -1,8 +1,5 @@
 ﻿namespace TaskScript.Application.Infrastructure.Filters
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;

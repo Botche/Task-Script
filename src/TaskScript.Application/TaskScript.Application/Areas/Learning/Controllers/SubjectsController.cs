@@ -114,19 +114,5 @@
 
             return this.RedirectToAction("index");
         }
-
-        //[HttpGet]
-        //public IActionResult All(int id = 123123, string name = "Default")
-        //{
-        //    // var queryString = HttpContext.Request.QueryString.Value;
-
-        //    IdNameViewModel model = new IdNameViewModel()
-        //    {
-        //        Id = id,
-        //        Name = name,
-        //    };
-
-        //    return this.View("all", model);
-        //}
     }
 }
