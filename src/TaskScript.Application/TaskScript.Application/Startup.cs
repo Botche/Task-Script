@@ -67,7 +67,7 @@ namespace TaskScript.Application
                 }
 
                 // Custom error handling only for development
-                app.UseMiddleware<GlobalExceptionMiddleware>();
+                // app.UseMiddleware<GlobalExceptionMiddleware>();
             }
             else
             {

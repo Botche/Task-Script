@@ -13,6 +13,7 @@
     using TaskScript.Application.Constants;
     using TaskScript.Application.Data;
     using TaskScript.Application.Data.Models;
+    using TaskScript.Application.Infrastructure.Filters;
     using TaskScript.Application.Services.Interfaces;
 
     public class LessonsController : LearningController
@@ -66,14 +67,9 @@
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [ModelStateValidationFilter]
         public async Task<IActionResult> Create(CreateLessonBindingModel model)
         {
-            if (this.ModelState.IsValid == false)
-            {
-                this.TempData[NotificationsConstants.ErrorNotification] = "Something went wrong";
-                return this.RedirectToAction("create");
-            }
-
             await this.lessonsService.CreateAsync(model);
             this.TempData[NotificationsConstants.SuccessNotification] = NotificationsConstants.SuccessfullyAddedLesson;
 

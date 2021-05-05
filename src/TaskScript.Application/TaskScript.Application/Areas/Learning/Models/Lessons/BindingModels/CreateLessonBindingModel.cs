@@ -7,7 +7,7 @@
     public class CreateLessonBindingModel
     {
         [Required]
-        [MinLength(2)]
+        [MinLength(2, ErrorMessage = "Name must be with length more than 2 symbols")]
         [MaxLength(64)]
         public string Name { get; set; }
 
