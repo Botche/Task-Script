@@ -8,7 +8,7 @@
 
     public interface ILessonsService
     {
-        IEnumerable<GetAllLessonsViewModel> GetAll();
+        IEnumerable<GetAllLessonsViewModel> GetAll(string currentUserId);
 
         LessonViewModel GetById(int id);
 

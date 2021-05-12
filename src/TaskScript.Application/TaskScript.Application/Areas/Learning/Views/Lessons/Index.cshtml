@@ -53,20 +53,26 @@
                         }
                     </td>
                     <td>
-                        @*<a asp-area="Learning"
+                        @if (lesson.CurrentUserIsEnrolled)
+                        {
+                            <a asp-area="Learning"
+                               asp-controller="Lessons"
+                               asp-action="Disenroll"
+                               asp-route-id="@lesson.Id"
+                               class="btn btn-outline-danger w-25">
+                                Disenroll
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-area="Learning"
                                asp-controller="Lessons"
                                asp-action="Enroll"
                                asp-route-id="@lesson.Id"
                                class="btn btn-outline-success w-25">
                                 Enroll
-                            </a>*@
-                        <a asp-area="Learning"
-                           asp-controller="Lessons"
-                           asp-action="Disenroll"
-                           asp-route-id="@lesson.Id"
-                           class="btn btn-outline-danger w-25">
-                            Disenroll
-                        </a>
+                            </a>
+                        }
                     </td>
                 </tr>
             }

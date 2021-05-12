@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
+
     using TaskScript.Application.Areas.Learning.Models.Lessons.BindingModels;
     using TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels;
     using TaskScript.Application.Data;
@@ -13,19 +15,24 @@
     public class LessonsService : ILessonsService
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly ILessonsUsersService lessonsUsersService;
 
-        public LessonsService(ApplicationDbContext dbContext)
+        public LessonsService(
+            ApplicationDbContext dbContext,
+            ILessonsUsersService lessonsUsersService)
         {
             this.dbContext = dbContext;
+            this.lessonsUsersService = lessonsUsersService;
         }
 
-        public IEnumerable<GetAllLessonsViewModel> GetAll()
+        public IEnumerable<GetAllLessonsViewModel> GetAll(string userId)
         {
             IEnumerable<GetAllLessonsViewModel> lessons = this.dbContext.Lessons
                 .Select(lesson => new GetAllLessonsViewModel
                 {
                     Id = lesson.Id,
                     Name = lesson.Name,
+                    CurrentUserIsEnrolled = this.lessonsUsersService.IsAlreadyEnrolledInLesson(userId, lesson.Id),
                 })
                 .ToList();
 

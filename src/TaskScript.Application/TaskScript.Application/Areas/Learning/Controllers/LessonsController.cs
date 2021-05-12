@@ -35,9 +35,10 @@
             this.userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<GetAllLessonsViewModel> lessons = this.lessonsService.GetAll();
+            ApplicationUser currentUser = await this.userManager.GetUserAsync(this.User);
+            IEnumerable<GetAllLessonsViewModel> lessons = this.lessonsService.GetAll(currentUser.Id);
 
             return this.View(lessons);
         }

@@ -15,16 +15,13 @@
     {
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ILessonsService lessonsService;
 
         public LessonsUsersService(
             ApplicationDbContext dbContext,
-            UserManager<ApplicationUser> userManager,
-            ILessonsService lessonsService)
+            UserManager<ApplicationUser> userManager)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
-            this.lessonsService = lessonsService;
         }
 
         public async Task<bool> EnrollUserToLessonAsync(string userId, int lessonId)
@@ -90,7 +87,9 @@
 
         private async Task CheckIfUserAndLessonExistsAsync(string userId, int lessonId)
         {
-            if (this.lessonsService.CheckIfLessonExist(lessonId) == false)
+            bool isLessonExists = this.dbContext.Lessons.Any(l => l.Id == lessonId);
+
+            if (isLessonExists == false)
             {
                 throw new ArgumentException(ExceptionConstants.NotExistingLessonErrorMessage);
             }
