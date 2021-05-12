@@ -29,15 +29,7 @@
 
         public async Task<bool> EnrollUserToLessonAsync(string userId, int lessonId)
         {
-            if (this.lessonsService.CheckIfLessonExist(lessonId) == false)
-            {
-                throw new ArgumentException(ExceptionConstants.NotExistingLessonErrorMessage);
-            }
-
-            if (await this.userManager.FindByIdAsync(userId) == null)
-            {
-                throw new ArgumentException(ExceptionConstants.NotExistingUserErrorMessage);
-            }
+            await CheckIfUserAndLessonExistsAsync(userId, lessonId);
 
             if (this.IsAlreadyEnrolledInLesson(userId, lessonId))
             {
@@ -59,23 +51,54 @@
 
         public bool IsAlreadyEnrolledInLesson(string userId, int lessonId)
         {
-            LessonUser enrollment = this.dbContext.LessonsUsers
-                .Where(lu => lu.UserId == userId && lu.LessonId == lessonId)
-                .FirstOrDefault();
+            LessonUser enrollment = this.GetEnrollment(userId, lessonId);
 
             bool isAlreadyEnrolled = enrollment != null;
-
             return isAlreadyEnrolled;
         }
 
         public async Task<bool> RemoveUserFromLessonAsync(string userId, int lessonId)
         {
-            throw new NotImplementedException();
+            await CheckIfUserAndLessonExistsAsync(userId, lessonId);
+
+            if (this.IsAlreadyEnrolledInLesson(userId, lessonId) == false)
+            {
+                return false;
+            }
+
+            LessonUser enrollment = this.GetEnrollment(userId, lessonId);
+
+            this.dbContext.LessonsUsers.Remove(enrollment);
+            await this.dbContext.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<int> SeatsLeftInLessonAsync(int lessonId)
         {
             throw new NotImplementedException();
+        }
+
+        private LessonUser GetEnrollment(string userId, int lessonId)
+        {
+            LessonUser enrollment = this.dbContext.LessonsUsers
+                .Where(lu => lu.UserId == userId && lu.LessonId == lessonId)
+                .FirstOrDefault();
+
+            return enrollment;
+        }
+
+        private async Task CheckIfUserAndLessonExistsAsync(string userId, int lessonId)
+        {
+            if (this.lessonsService.CheckIfLessonExist(lessonId) == false)
+            {
+                throw new ArgumentException(ExceptionConstants.NotExistingLessonErrorMessage);
+            }
+
+            if (await this.userManager.FindByIdAsync(userId) == null)
+            {
+                throw new ArgumentException(ExceptionConstants.NotExistingUserErrorMessage);
+            }
         }
     }
 }

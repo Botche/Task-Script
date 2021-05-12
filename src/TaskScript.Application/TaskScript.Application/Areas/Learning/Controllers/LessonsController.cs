@@ -135,7 +135,6 @@
             ApplicationUser currentUser = await this.userManager.GetUserAsync(this.User);
 
             bool isSuccessfullyEnrolled = await this.lessonsUsersService.EnrollUserToLessonAsync(currentUser.Id, id);
-
             if (isSuccessfullyEnrolled)
             {
                 this.TempData[NotificationsConstants.SuccessNotification] = NotificationsConstants.SuccessfullyEnrolledInLesson;
@@ -144,6 +143,24 @@
             {
 
                 this.TempData[NotificationsConstants.WarningNotification] = NotificationsConstants.AlreadyEnrolledInLesson;
+            }
+
+            return this.RedirectToAction("index");
+        }
+
+        public async Task<IActionResult> Disenroll(int id)
+        {
+            ApplicationUser currentUser = await this.userManager.GetUserAsync(this.User);
+
+            bool isSuccessfullyDisenrolled = await this.lessonsUsersService.RemoveUserFromLessonAsync(currentUser.Id, id);
+            if (isSuccessfullyDisenrolled)
+            {
+                this.TempData[NotificationsConstants.SuccessNotification] = NotificationsConstants.SuccessfullyDisenrolledFromLesson;
+            }
+            else
+            {
+
+                this.TempData[NotificationsConstants.WarningNotification] = NotificationsConstants.AlreadyDisenrolledFromLesson;
             }
 
             return this.RedirectToAction("index");

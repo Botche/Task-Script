@@ -12,5 +12,7 @@
         public const string AlreadyCreatedRoles = "Default roles are already created.";
         public const string SuccessfullyEnrolledInLesson = "Successfully enrolled in the lesson.";
         public const string AlreadyEnrolledInLesson = "Already enrolled in this lesson!";
+        public const string SuccessfullyDisenrolledFromLesson = "Successfully disenrolled from the lesson.";
+        public const string AlreadyDisenrolledFromLesson = "Already disenrolled from this lesson!";
     }
 }
