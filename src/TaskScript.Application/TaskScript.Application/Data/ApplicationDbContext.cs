@@ -5,7 +5,7 @@
 
     using TaskScript.Application.Data.Models;
 
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -16,20 +16,13 @@
 
         public DbSet<Lesson> Lessons { get; set; }
 
+        public DbSet<LessonUser> LessonsUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder
-                .Entity<Subject>()
-                .HasIndex(subject => subject.Name)
-                .IsUnique();
-
-            builder
-                .Entity<Lesson>()
-                .HasOne(lesson => lesson.Subject)
-                .WithMany(subject => subject.Lessons)
-                .HasForeignKey(lesson => lesson.SubjectId);
+            builder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
         }
     }
 }

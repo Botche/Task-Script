@@ -1,10 +1,16 @@
 ﻿namespace TaskScript.Application.Data.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Lesson
     {
+        public Lesson()
+        {
+            this.LessonsUsers = new HashSet<LessonUser>();
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -28,5 +34,7 @@
         [Required]
         public int SubjectId { get; set; }
         public virtual Subject Subject { get; set; }
+
+        public virtual ICollection<LessonUser> LessonsUsers { get; set; }
     }
 }

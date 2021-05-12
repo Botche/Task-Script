@@ -7,20 +7,21 @@
     using Microsoft.Extensions.DependencyInjection;
 
     using TaskScript.Application.Constants;
+    using TaskScript.Application.Data.Models;
     using TaskScript.Application.Data.Seed.Seeders.Interfaces;
 
     public class UsersSeeder : ISeeder
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
-            UserManager<IdentityUser> userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            UserManager<ApplicationUser> userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            IdentityUser user = new IdentityUser
+            ApplicationUser user = new ApplicationUser
             {
                 UserName = UsersConstants.UserUsername,
                 Email = UsersConstants.UserEmail,
             };
-            IdentityUser admin = new IdentityUser
+            ApplicationUser admin = new ApplicationUser
             {
                 UserName = UsersConstants.AdminUsername,
                 Email = UsersConstants.AdminEmail,
