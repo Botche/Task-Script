@@ -5,12 +5,14 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using TaskScript.Application.Areas.Learning.Models.Lessons.BindingModels;
     using TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels;
     using TaskScript.Application.Areas.Learning.Models.Subjects.ViewModels;
     using TaskScript.Application.Constants;
+    using TaskScript.Application.Data.Models;
     using TaskScript.Application.Infrastructure.Filters;
     using TaskScript.Application.Services.Interfaces;
 
@@ -18,11 +20,19 @@
     {
         private readonly ISubjectsService subjectsService;
         private readonly ILessonsService lessonsService;
+        private readonly ILessonsUsersService lessonsUsersService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public LessonsController(ISubjectsService subjectsService, ILessonsService lessonsService)
+        public LessonsController(
+            ISubjectsService subjectsService, 
+            ILessonsService lessonsService,
+            ILessonsUsersService lessonsUsersService,
+            UserManager<ApplicationUser> userManager)
         {
             this.subjectsService = subjectsService;
             this.lessonsService = lessonsService;
+            this.lessonsUsersService = lessonsUsersService;
+            this.userManager = userManager;
         }
 
         public IActionResult Index()
@@ -115,6 +125,25 @@
             if (isDeleted == false)
             {
                 return this.BadRequest();
+            }
+
+            return this.RedirectToAction("index");
+        }
+
+        public async Task<IActionResult> Enroll(int id)
+        {
+            ApplicationUser currentUser = await this.userManager.GetUserAsync(this.User);
+
+            bool isSuccessfullyEnrolled = await this.lessonsUsersService.EnrollUserToLessonAsync(currentUser.Id, id);
+
+            if (isSuccessfullyEnrolled)
+            {
+                this.TempData[NotificationsConstants.SuccessNotification] = NotificationsConstants.SuccessfullyEnrolledInLesson;
+            }
+            else
+            {
+
+                this.TempData[NotificationsConstants.WarningNotification] = NotificationsConstants.AlreadyEnrolledInLesson;
             }
 
             return this.RedirectToAction("index");

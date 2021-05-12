@@ -14,6 +14,8 @@
 
         UpdateLessonBindingModel GetByIdForUpdateMethod(int id);
 
+        bool CheckIfLessonExist(int id);
+
         Task<int> CreateAsync(CreateLessonBindingModel model);
 
         Task<bool> UpdateAsync(UpdateLessonBindingModel model);

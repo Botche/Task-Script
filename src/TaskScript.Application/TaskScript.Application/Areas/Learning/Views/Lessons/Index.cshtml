@@ -26,9 +26,12 @@
                 <th>
                     Action links
                 </th>
+                <th>
+                    Enroll/Disenroll
+                </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-rows-vertically-centered">
             @foreach (GetAllLessonsViewModel lesson in Model)
             {
                 <tr>
@@ -49,9 +52,18 @@
                             }
                         }
                     </td>
+                    <td>
+                        <a asp-area="Learning"
+                           asp-controller="Lessons"
+                           asp-action="Enroll"
+                           asp-route-id="@lesson.Id"
+                           class="btn btn-outline-success w-25">
+                            Enroll
+                        </a>
+                    </td>
                 </tr>
             }
-</tbody>
+        </tbody>
     </table>
 }
 else

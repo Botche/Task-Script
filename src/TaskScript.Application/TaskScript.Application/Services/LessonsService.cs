@@ -133,5 +133,13 @@
 
             return lesson;
         }
+
+        public bool CheckIfLessonExist(int id)
+        {
+            bool isLessonExist = this.dbContext.Lessons
+                .Any(l => l.Id == id);
+
+            return isLessonExist;
+        }
     }
 }

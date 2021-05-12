@@ -93,6 +93,7 @@ namespace TaskScript.Application
         {
             services.AddScoped<ISubjectsService, SubjectsService>();
             services.AddScoped<ILessonsService, LessonsService>();
+            services.AddScoped<ILessonsUsersService, LessonsUsersService>();
         }
     }
 }
