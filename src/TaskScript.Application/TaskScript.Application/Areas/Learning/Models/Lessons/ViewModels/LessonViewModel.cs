@@ -17,7 +17,7 @@
         public bool IsOnline { get; set; }
 
         [DisplayName("Presentation date")]
-        public DateTime? PresentationDate { get; set; }
+        public DateTime PresentationDate { get; set; }
 
         public int? Seats { get; set; }
 

@@ -26,7 +26,7 @@
         [Required]
         public bool IsOnline { get; set; }
 
-        public DateTime? PresentationDate { get; set; }
+        public DateTime PresentationDate { get; set; }
 
         [Range(0, 64)]
         public int? Seats { get; set; }
