@@ -37,8 +37,13 @@
 
         public async Task<IActionResult> Index()
         {
+            IEnumerable<GetAllLessonsViewModel> lessons = this.lessonsService.GetAll();
+
             ApplicationUser currentUser = await this.userManager.GetUserAsync(this.User);
-            IEnumerable<GetAllLessonsViewModel> lessons = this.lessonsService.GetAll(currentUser.Id);
+            if (this.User.Identity.IsAuthenticated)
+            {
+                this.lessonsUsersService.PopulateLessonsWithInformationAboutUsers(lessons, currentUser.Id);
+            }
 
             return this.View(lessons);
         }
@@ -131,6 +136,7 @@
             return this.RedirectToAction("index");
         }
 
+        [Authorize]
         public async Task<IActionResult> Enroll(int id)
         {
             ApplicationUser currentUser = await this.userManager.GetUserAsync(this.User);
@@ -142,13 +148,13 @@
             }
             else
             {
-
-                this.TempData[NotificationsConstants.WarningNotification] = NotificationsConstants.AlreadyEnrolledInLesson;
+                this.TempData[NotificationsConstants.WarningNotification] = NotificationsConstants.NoSeatsLeft;
             }
 
             return this.RedirectToAction("index");
         }
 
+        [Authorize]
         public async Task<IActionResult> Disenroll(int id)
         {
             ApplicationUser currentUser = await this.userManager.GetUserAsync(this.User);

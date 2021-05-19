@@ -7,5 +7,7 @@
         public string Name { get; set; }
 
         public bool CurrentUserIsEnrolled { get; set; }
+
+        public int? SeatsLeft { get; set; }
     }
 }

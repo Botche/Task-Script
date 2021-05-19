@@ -26,9 +26,12 @@
                 <th>
                     Action links
                 </th>
-                <th>
-                    Enroll/Disenroll
-                </th>
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <th>
+                        Enroll/Disenroll
+                    </th>
+                }
             </tr>
         </thead>
         <tbody class="table-rows-vertically-centered">
@@ -52,28 +55,46 @@
                             }
                         }
                     </td>
-                    <td>
-                        @if (lesson.CurrentUserIsEnrolled)
-                        {
-                            <a asp-area="Learning"
-                               asp-controller="Lessons"
-                               asp-action="Disenroll"
-                               asp-route-id="@lesson.Id"
-                               class="btn btn-outline-danger w-25">
-                                Disenroll
-                            </a>
-                        }
-                        else
-                        {
-                            <a asp-area="Learning"
-                               asp-controller="Lessons"
-                               asp-action="Enroll"
-                               asp-route-id="@lesson.Id"
-                               class="btn btn-outline-success w-25">
-                                Enroll
-                            </a>
-                        }
-                    </td>
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <td>
+                            @{
+                                bool noSeatsLeft = lesson.SeatsLeft.HasValue && lesson.SeatsLeft.Value == 0;
+                            }
+                            @if (lesson.CurrentUserIsEnrolled)
+                            {
+                                <a asp-area="Learning"
+                                   asp-controller="Lessons"
+                                   asp-action="Disenroll"
+                                   asp-route-id="@lesson.Id"
+                                   class="btn btn-outline-danger w-25">
+                                    Disenroll
+                                </a>
+                            }
+                            else
+                            {
+                                @if (noSeatsLeft)
+                                {
+                                    <button disabled class="btn btn-outline-secondary w-25">Enroll</button>
+                                }
+                                else
+                                {
+                                    <a asp-area="Learning"
+                                       asp-controller="Lessons"
+                                       asp-action="Enroll"
+                                       asp-route-id="@lesson.Id"
+                                       class="btn btn-outline-success w-25">
+                                        Enroll
+                                    </a>
+                                }
+                            }
+
+                            @if (lesson.SeatsLeft.HasValue)
+                            {
+                                <span class="text-secondary">(@lesson.SeatsLeft.Value seats left)</span>
+                            }
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

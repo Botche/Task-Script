@@ -1,11 +1,13 @@
 ﻿namespace TaskScript.Application.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Identity;
 
+    using TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels;
     using TaskScript.Application.Constants;
     using TaskScript.Application.Data;
     using TaskScript.Application.Data.Models;
@@ -15,13 +17,16 @@
     {
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILessonsService lessonsService;
 
         public LessonsUsersService(
             ApplicationDbContext dbContext,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ILessonsService lessonsService)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.lessonsService = lessonsService;
         }
 
         public async Task<bool> EnrollUserToLessonAsync(string userId, int lessonId)
@@ -29,6 +34,13 @@
             await CheckIfUserAndLessonExistsAsync(userId, lessonId);
 
             if (this.IsAlreadyEnrolledInLesson(userId, lessonId))
+            {
+                throw new InvalidOperationException(ExceptionConstants.AlreadyEnrolledInLessonErrorMessage);
+            }
+
+            int? seatsLeft = this.SeatsLeftInLesson(lessonId);
+            bool canJoin = seatsLeft.HasValue == false || seatsLeft.Value > 0;
+            if (canJoin == false)
             {
                 return false;
             }
@@ -71,9 +83,39 @@
             return true;
         }
 
-        public async Task<int> SeatsLeftInLessonAsync(int lessonId)
+        public int? SeatsLeftInLesson(int lessonId)
         {
-            throw new NotImplementedException();
+            int seatsTaken = this.SeatsTakenInLesson(lessonId);
+            int? allSeats = this.lessonsService.GetAllSeats(lessonId);
+
+            if (allSeats.HasValue == false)
+            {
+                return null;
+            }
+
+            int leftSeats = allSeats.Value - seatsTaken;
+
+            return leftSeats;
+        }
+
+        public int SeatsTakenInLesson(int lessonId)
+        {
+            int seatsTaken = this.dbContext.LessonsUsers
+                .Where(lu => lu.LessonId == lessonId)
+                .Count();
+
+            return seatsTaken;
+        }
+
+        public IEnumerable<GetAllLessonsViewModel> PopulateLessonsWithInformationAboutUsers(IEnumerable<GetAllLessonsViewModel> lessons, string userId)
+        {
+            foreach (GetAllLessonsViewModel lesson in lessons)
+            {
+                lesson.CurrentUserIsEnrolled = this.IsAlreadyEnrolledInLesson(userId, lesson.Id);
+                lesson.SeatsLeft = this.SeatsLeftInLesson(lesson.Id);
+            }
+
+            return lessons;
         }
 
         private LessonUser GetEnrollment(string userId, int lessonId)
@@ -87,7 +129,7 @@
 
         private async Task CheckIfUserAndLessonExistsAsync(string userId, int lessonId)
         {
-            bool isLessonExists = this.dbContext.Lessons.Any(l => l.Id == lessonId);
+            bool isLessonExists = this.lessonsService.CheckIfLessonExist(lessonId);
 
             if (isLessonExists == false)
             {

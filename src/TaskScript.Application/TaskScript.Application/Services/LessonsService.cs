@@ -4,8 +4,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Identity;
-
     using TaskScript.Application.Areas.Learning.Models.Lessons.BindingModels;
     using TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels;
     using TaskScript.Application.Data;
@@ -15,24 +13,19 @@
     public class LessonsService : ILessonsService
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly ILessonsUsersService lessonsUsersService;
 
-        public LessonsService(
-            ApplicationDbContext dbContext,
-            ILessonsUsersService lessonsUsersService)
+        public LessonsService(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.lessonsUsersService = lessonsUsersService;
         }
 
-        public IEnumerable<GetAllLessonsViewModel> GetAll(string userId)
+        public IEnumerable<GetAllLessonsViewModel> GetAll()
         {
             IEnumerable<GetAllLessonsViewModel> lessons = this.dbContext.Lessons
                 .Select(lesson => new GetAllLessonsViewModel
                 {
                     Id = lesson.Id,
                     Name = lesson.Name,
-                    CurrentUserIsEnrolled = this.lessonsUsersService.IsAlreadyEnrolledInLesson(userId, lesson.Id),
                 })
                 .ToList();
 
@@ -132,6 +125,24 @@
             return true;
         }
 
+        public bool CheckIfLessonExist(int id)
+        {
+            bool isLessonExist = this.dbContext.Lessons
+                .Any(l => l.Id == id);
+
+            return isLessonExist;
+        }
+
+        public int? GetAllSeats(int lessonId)
+        {
+            int? allSeats = this.dbContext.Lessons
+                .Where(l => l.Id == lessonId)
+                .FirstOrDefault()
+                .Seats;
+
+            return allSeats;
+        }
+
         private Lesson GetLessonById(int id)
         {
             Lesson lesson = this.dbContext.Lessons
@@ -139,14 +150,6 @@
                 .SingleOrDefault();
 
             return lesson;
-        }
-
-        public bool CheckIfLessonExist(int id)
-        {
-            bool isLessonExist = this.dbContext.Lessons
-                .Any(l => l.Id == id);
-
-            return isLessonExist;
         }
     }
 }

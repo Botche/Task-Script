@@ -8,7 +8,7 @@
 
     public interface ILessonsService
     {
-        IEnumerable<GetAllLessonsViewModel> GetAll(string currentUserId);
+        IEnumerable<GetAllLessonsViewModel> GetAll();
 
         LessonViewModel GetById(int id);
 
@@ -21,5 +21,7 @@
         Task<bool> UpdateAsync(UpdateLessonBindingModel model);
 
         Task<bool> DeleteAsync(int id);
+
+        int? GetAllSeats(int lessonId);
     }
 }
