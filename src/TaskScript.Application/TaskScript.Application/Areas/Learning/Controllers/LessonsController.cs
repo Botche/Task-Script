@@ -116,6 +116,21 @@
         [ModelStateValidationFilter]
         public async Task<IActionResult> Update(UpdateLessonBindingModel model)
         {
+            bool areSeatsCorrect = this.lessonsUsersService.CheckIfSeatsValueIsPositiveBasedOnAlreadyEnrolledUsers(model.Id, model.Seats);
+            if (areSeatsCorrect == false)
+            {
+                IEnumerable<IdNameViewModel> subjects = this.subjectsService.GetAll();
+                ViewBag.Subjects = subjects;
+
+                string errorNotificationMessage = string.Format(
+                    NotificationsConstants.InvalidSeatsValue, 
+                    this.lessonsUsersService.SeatsTakenInLesson(model.Id)
+                );
+                this.TempData[NotificationsConstants.ErrorNotification] = errorNotificationMessage;
+
+                return this.View(model);
+            }
+
             bool isUpdated = await this.lessonsService.UpdateAsync(model);
             if (isUpdated == false)
             {

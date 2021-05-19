@@ -127,6 +127,24 @@
             return lesson;
         }
 
+        public bool CheckIfSeatsValueIsPositiveBasedOnAlreadyEnrolledUsers(int id, int? newSeats)
+        {
+            if (this.lessonsService.CheckIfLessonExist(id) == false)
+            {
+                throw new InvalidOperationException(ExceptionConstants.NotExistingLessonErrorMessage);
+            }
+
+            int seatsTaken = this.SeatsTakenInLesson(id);
+
+            bool isCorrect = newSeats.HasValue == false || seatsTaken <= newSeats.Value;
+            if (isCorrect == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private IEnumerable<string> GetAllUsernamesThatEnrollInLesson(int lessonId)
         {
             IEnumerable<string> usernames = this.dbContext.LessonsUsers

@@ -20,5 +20,6 @@
         IEnumerable<GetAllLessonsViewModel> PopulateLessonsWithInformationAboutUsers(IEnumerable<GetAllLessonsViewModel> lessons, string id);
 
         LessonViewModel PopulateLessonWithUsersEnrolledInformation(LessonViewModel lesson);
+        bool CheckIfSeatsValueIsPositiveBasedOnAlreadyEnrolledUsers(int id, int? seats);
     }
 }
