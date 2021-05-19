@@ -3,10 +3,15 @@
 @{
     ViewData["Title"] = Model.Name;
 
-    string h1Text = "Details for \"{Model.Name}\" lesson";
+    string h1Text = $"Details for \"{Model.Name}\" lesson";
+    DetailsHeaderModel detailsHeaderModel = new DetailsHeaderModel()
+    {
+        H1Text = h1Text,
+        ObjectId = Model.Id,
+    };
 }
 
-<partial name="_DetailsHeader" model="h1Text" />
+<partial name="_DetailsHeader" model="detailsHeaderModel" />
 
 <div>
     <hr />
@@ -40,14 +45,7 @@
             @Html.DisplayNameFor(model => model.PresentationDate)
         </dt>
         <dd class="col-sm-10">
-            @if (Model.PresentationDate.HasValue)
-            {
-                @Html.DisplayFor(model => model.PresentationDate)
-            }
-            else
-            {
-                <span>Not set</span>
-            }
+            @Html.DisplayFor(model => model.PresentationDate)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Seats)

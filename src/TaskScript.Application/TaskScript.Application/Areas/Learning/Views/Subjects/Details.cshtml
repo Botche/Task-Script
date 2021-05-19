@@ -3,10 +3,15 @@
 @{
     ViewData["Title"] = Model.Name;
 
-    string h1Text = "Details for \"{Model.Name}\" subject";
+    string h1Text = $"Details for \"{Model.Name}\" subject";
+    DetailsHeaderModel detailsHeaderModel = new DetailsHeaderModel()
+    {
+        H1Text = h1Text,
+        ObjectId = Model.Id,
+    };
 }
 
-<partial name="_DetailsHeader" model="h1Text" />
+<partial name="_DetailsHeader" model="detailsHeaderModel" />
 
 <div>
     <hr />
