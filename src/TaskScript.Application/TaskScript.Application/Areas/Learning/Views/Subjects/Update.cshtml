@@ -2,13 +2,14 @@
 
 @{
     ViewData["Title"] = $"Update - {Model.Name}";
+
+    string h1Text = $"Update \"{Model.Name}\" subject";
 }
 
-<h1>Update</h1>
+<partial name="_CreateUpdateHeader" model="h1Text" />
 
-<h4>Subject</h4>
 <hr />
-<div>
+<div class="w-50 mx-auto">
     <form asp-action="Update">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
@@ -18,13 +19,9 @@
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="submit" value="Save" class="btn btn-primary w-100" />
         </div>
     </form>
-</div>
-
-<div>
-    <a asp-action="Details" asp-route-id="@Model.Id">Back to details</a>
 </div>
 
 @section Scripts {

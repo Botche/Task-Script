@@ -2,12 +2,13 @@
 
 @{
     ViewData["Title"] = Model.Name;
+
+    string h1Text = "Details for \"{Model.Name}\" lesson";
 }
 
-<h1>Details</h1>
+<partial name="_DetailsHeader" model="h1Text" />
 
 <div>
-    <h4>DetailsLessonViewModel</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -95,20 +96,9 @@
     {
         <p>No users enrolled in this lesson yet...</p>
     }
+    <hr />
 </div>
 
 <div>
-    <hr />
-    @if (this.User.Identity.IsAuthenticated)
-    {
-        @Html.ActionLink("Update", "Update", new { id = Model.Id })
-        <span>|</span>
-
-        @if (this.User.IsInRole(RolesConstants.AdminRoleName))
-        {
-            @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
-            <span>|</span>
-        }
-    }
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
 </div>

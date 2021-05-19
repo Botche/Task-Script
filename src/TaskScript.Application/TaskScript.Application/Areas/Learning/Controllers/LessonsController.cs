@@ -51,13 +51,14 @@
         public IActionResult Details(int id)
         {
             LessonViewModel lesson = this.lessonsService.GetById(id);
-            lesson = this.lessonsUsersService.PopulateLessonWithUsersEnrolledInformation(lesson);
 
             bool isNull = lesson == null;
             if (isNull)
             {
                 return this.BadRequest();
             }
+
+            lesson = this.lessonsUsersService.PopulateLessonWithUsersEnrolledInformation(lesson);
 
             return this.View(lesson);
         }
