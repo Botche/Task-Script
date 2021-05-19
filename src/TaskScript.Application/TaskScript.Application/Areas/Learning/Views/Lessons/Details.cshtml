@@ -2,9 +2,6 @@
 
 @{
     ViewData["Title"] = Model.Name;
-
-    bool isPresentationDateNull = Model.PresentationDate == null;
-    bool areSeatsNull = Model.Seats == null;
 }
 
 <h1>Details</h1>
@@ -42,28 +39,37 @@
             @Html.DisplayNameFor(model => model.PresentationDate)
         </dt>
         <dd class="col-sm-10">
-            @if (isPresentationDateNull)
+            @if (Model.PresentationDate.HasValue)
             {
-                <span>Not set</span>
+                @Html.DisplayFor(model => model.PresentationDate)
             }
             else
             {
-                @Html.DisplayFor(model => model.PresentationDate)
+                <span>Not set</span>
             }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Seats)
         </dt>
         <dd class="col-sm-10">
-            @if (areSeatsNull)
-            {
-                <span>Not set</span>
-            }
-            else
+            @if (Model.Seats.HasValue)
             {
                 @Html.DisplayFor(model => model.Seats)
             }
+            else
+            {
+                <span>Not set</span>
+            }
         </dd>
+        @if (Model.SeatsLeft.HasValue)
+        {
+            <dt class="col-sm-2 font-weight-bolder">
+                @Html.DisplayNameFor(model => model.SeatsLeft)
+            </dt>
+            <dd class="col-sm-10 font-weight-bolder">
+                @Html.DisplayFor(model => model.SeatsLeft)
+            </dd>
+        }
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.SubjectName)
         </dt>
@@ -72,8 +78,27 @@
         </dd>
     </dl>
 </div>
-<div>
 
+<div>
+    <h3>Users enrolled in this lesson:</h3>
+    <hr />
+    @if (this.Model.EnrolledUsernames.Any())
+    {
+        <ul>
+            @foreach (var username in Model.EnrolledUsernames)
+            {
+                <li>@username</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No users enrolled in this lesson yet...</p>
+    }
+</div>
+
+<div>
+    <hr />
     @if (this.User.Identity.IsAuthenticated)
     {
         @Html.ActionLink("Update", "Update", new { id = Model.Id })

@@ -18,5 +18,7 @@
         bool IsAlreadyEnrolledInLesson(string userId, int lessonId);
 
         IEnumerable<GetAllLessonsViewModel> PopulateLessonsWithInformationAboutUsers(IEnumerable<GetAllLessonsViewModel> lessons, string id);
+
+        LessonViewModel PopulateLessonWithUsersEnrolledInformation(LessonViewModel lesson);
     }
 }

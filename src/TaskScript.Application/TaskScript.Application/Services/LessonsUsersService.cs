@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
 
     using TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels;
     using TaskScript.Application.Constants;
@@ -116,6 +117,24 @@
             }
 
             return lessons;
+        }
+
+        public LessonViewModel PopulateLessonWithUsersEnrolledInformation(LessonViewModel lesson)
+        {
+            lesson.SeatsLeft = this.SeatsLeftInLesson(lesson.Id);
+            lesson.EnrolledUsernames = this.GetAllUsernamesThatEnrollInLesson(lesson.Id);
+
+            return lesson;
+        }
+
+        private IEnumerable<string> GetAllUsernamesThatEnrollInLesson(int lessonId)
+        {
+            IEnumerable<string> usernames = this.dbContext.LessonsUsers
+                .Where(lu => lu.LessonId == lessonId)
+                .Select(lu => lu.User.UserName)
+                .ToList();
+
+            return usernames;
         }
 
         private LessonUser GetEnrollment(string userId, int lessonId)

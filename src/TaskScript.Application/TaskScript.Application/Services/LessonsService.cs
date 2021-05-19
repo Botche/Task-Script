@@ -44,6 +44,7 @@
                     PresentationDate = lesson.PresentationDate,
                     Seats = lesson.Seats,
                     SubjectName = lesson.Subject.Name,
+                    EnrolledUsernames = new List<string>(),
                 })
                 .Where(lesson => lesson.Id == id)
                 .SingleOrDefault();
