@@ -9,5 +9,7 @@
         public bool CurrentUserIsEnrolled { get; set; }
 
         public int? SeatsLeft { get; set; }
+
+        public bool IsOld { get; set; }
     }
 }

@@ -23,5 +23,7 @@
         Task<bool> DeleteAsync(int id);
 
         int? GetAllSeats(int lessonId);
+
+        bool CheckIfLessonIsOld(int lessonId);
     }
 }

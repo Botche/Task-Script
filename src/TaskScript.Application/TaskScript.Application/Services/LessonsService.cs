@@ -1,11 +1,13 @@
 ﻿namespace TaskScript.Application.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using TaskScript.Application.Areas.Learning.Models.Lessons.BindingModels;
     using TaskScript.Application.Areas.Learning.Models.Lessons.ViewModels;
+    using TaskScript.Application.Constants;
     using TaskScript.Application.Data;
     using TaskScript.Application.Data.Models;
     using TaskScript.Application.Services.Interfaces;
@@ -142,6 +144,25 @@
                 .Seats;
 
             return allSeats;
+        }
+
+        public bool CheckIfLessonIsOld(int lessonId)
+        {
+            if (this.CheckIfLessonExist(lessonId) == false)
+            {
+                throw new InvalidOperationException(ExceptionConstants.NotExistingLessonErrorMessage);
+            }
+
+            DateTime presentationDate = this.GetLessonById(lessonId).PresentationDate;
+            DateTime now = DateTime.Now;
+
+            bool isOld = false;
+            if (now.CompareTo(presentationDate) > 0)
+            {
+                isOld = true;
+            }
+
+            return isOld;
         }
 
         private Lesson GetLessonById(int id)

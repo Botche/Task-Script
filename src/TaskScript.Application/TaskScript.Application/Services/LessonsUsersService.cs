@@ -112,8 +112,12 @@
         {
             foreach (GetAllLessonsViewModel lesson in lessons)
             {
-                lesson.CurrentUserIsEnrolled = this.IsAlreadyEnrolledInLesson(userId, lesson.Id);
-                lesson.SeatsLeft = this.SeatsLeftInLesson(lesson.Id);
+                lesson.IsOld = this.lessonsService.CheckIfLessonIsOld(lesson.Id);
+                if (lesson.IsOld == false)
+                {
+                    lesson.CurrentUserIsEnrolled = this.IsAlreadyEnrolledInLesson(userId, lesson.Id);
+                    lesson.SeatsLeft = this.SeatsLeftInLesson(lesson.Id);
+                }
             }
 
             return lessons;

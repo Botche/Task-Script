@@ -63,37 +63,44 @@
                             @{
                                 bool noSeatsLeft = lesson.SeatsLeft.HasValue && lesson.SeatsLeft.Value == 0;
                             }
-                            @if (lesson.CurrentUserIsEnrolled)
+                            @if (lesson.IsOld)
                             {
-                                <a asp-area="Learning"
-                                   asp-controller="Lessons"
-                                   asp-action="Disenroll"
-                                   asp-route-id="@lesson.Id"
-                                   class="btn btn-outline-danger w-25">
-                                    Disenroll
-                                </a>
+                                <button class="btn btn-outline-secondary w-25">Expired</button>
                             }
                             else
                             {
-                                @if (noSeatsLeft)
-                                {
-                                    <button disabled class="btn btn-outline-secondary w-25">Enroll</button>
-                                }
-                                else
+                                @if (lesson.CurrentUserIsEnrolled)
                                 {
                                     <a asp-area="Learning"
                                        asp-controller="Lessons"
-                                       asp-action="Enroll"
+                                       asp-action="Disenroll"
                                        asp-route-id="@lesson.Id"
-                                       class="btn btn-outline-success w-25">
-                                        Enroll
+                                       class="btn btn-outline-danger w-25">
+                                        Disenroll
                                     </a>
                                 }
-                            }
+                                else
+                                {
+                                    @if (noSeatsLeft)
+                                    {
+                                        <button disabled class="btn btn-outline-secondary w-25">Enroll</button>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="Learning"
+                                           asp-controller="Lessons"
+                                           asp-action="Enroll"
+                                           asp-route-id="@lesson.Id"
+                                           class="btn btn-outline-success w-25">
+                                            Enroll
+                                        </a>
+                                    }
+                                }
 
-                            @if (lesson.SeatsLeft.HasValue)
-                            {
-                                <span class="text-secondary">(@lesson.SeatsLeft.Value seats left)</span>
+                                @if (lesson.SeatsLeft.HasValue)
+                                {
+                                    <span class="text-secondary">(@lesson.SeatsLeft.Value seats left)</span>
+                                }
                             }
                         </td>
                     }
