@@ -14,6 +14,8 @@
 
     public class LessonsService : ILessonsService
     {
+        private const int LESSONS_PER_PAGE = 2;
+
         private readonly ApplicationDbContext dbContext;
 
         public LessonsService(ApplicationDbContext dbContext)
@@ -21,17 +23,34 @@
             this.dbContext = dbContext;
         }
 
-        public IEnumerable<GetAllLessonsViewModel> GetAll()
+        public PaginationLessonsViewModel GetAll(int page)
         {
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            int pageMultiplier = page - 1;
+
             IEnumerable<GetAllLessonsViewModel> lessons = this.dbContext.Lessons
                 .Select(lesson => new GetAllLessonsViewModel
                 {
                     Id = lesson.Id,
                     Name = lesson.Name,
                 })
+                .Skip(pageMultiplier * LESSONS_PER_PAGE)
+                .Take(LESSONS_PER_PAGE)
                 .ToList();
 
-            return lessons;
+            int totalPages = (int)Math.Ceiling(this.dbContext.Lessons.Count() / (double)LESSONS_PER_PAGE);
+            PaginationLessonsViewModel paginationLessons = new PaginationLessonsViewModel()
+            {
+                Lessons = lessons,
+                CurrentPage = page,
+                TotalPages = totalPages,
+            };
+
+            return paginationLessons;
         }
 
         public LessonViewModel GetById(int id)

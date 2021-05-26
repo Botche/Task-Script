@@ -8,7 +8,7 @@
 
     public interface ILessonsService
     {
-        IEnumerable<GetAllLessonsViewModel> GetAll();
+        PaginationLessonsViewModel GetAll(int page);
 
         LessonViewModel GetById(int id);
 

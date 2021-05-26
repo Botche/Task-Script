@@ -35,17 +35,17 @@
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            IEnumerable<GetAllLessonsViewModel> lessons = this.lessonsService.GetAll();
+            PaginationLessonsViewModel paginationLessons = this.lessonsService.GetAll(page);
 
             ApplicationUser currentUser = await this.userManager.GetUserAsync(this.User);
             if (this.User.Identity.IsAuthenticated)
             {
-                this.lessonsUsersService.PopulateLessonsWithInformationAboutUsers(lessons, currentUser.Id);
+                this.lessonsUsersService.PopulateLessonsWithInformationAboutUsers(paginationLessons.Lessons, currentUser.Id);
             }
 
-            return this.View(lessons);
+            return this.View(paginationLessons);
         }
 
         public IActionResult Details(int id)

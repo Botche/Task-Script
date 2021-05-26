@@ -1,9 +1,7 @@
-﻿@model IEnumerable<GetAllLessonsViewModel>
+﻿@model PaginationLessonsViewModel
 
 @{
     ViewData["Title"] = "All lessons";
-
-    bool areLessonInDatabase = Model.Count() != 0;
 }
 
 <div class="d-flex justify-content-between align-items-center">
@@ -17,13 +15,13 @@
     }
 </div>
 
-@if (areLessonInDatabase)
+@if (this.Model.Lessons.Any())
 {
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    @Html.DisplayNameFor(model => model.Lessons.First().Name)
                 </th>
                 <th>
                     Action links
@@ -37,7 +35,7 @@
             </tr>
         </thead>
         <tbody class="table-rows-vertically-centered">
-            @foreach (GetAllLessonsViewModel lesson in Model)
+            @foreach (GetAllLessonsViewModel lesson in Model.Lessons)
             {
                 <tr>
                     <td>
@@ -103,11 +101,44 @@
                                 }
                             }
                         </td>
-                    }
+                                }
                 </tr>
-            }
+                                }
         </tbody>
     </table>
+
+    <nav aria-label="Lessons pagination">
+        <ul class="pagination">
+            @{
+                bool isPreviousButtonDisabled = this.Model.CurrentPage == 1;
+                string previousButtonDisabledClass = isPreviousButtonDisabled ? "disabled" : "";
+
+                bool isNextButtonDisabled = this.Model.CurrentPage >= this.Model.TotalPages;
+                string nextButtonDisabledClass = isNextButtonDisabled ? "disabled" : "";
+
+                int previousPageIndex = this.Model.CurrentPage - 1;
+                int nextPageIndex = this.Model.CurrentPage + 1;
+            }
+
+            <li class="page-item @previousButtonDisabledClass">
+                <a class="page-link" asp-action="Index" asp-route-page="@previousPageIndex">Previous</a>
+            </li>
+
+            @for (int pageIndex = 1; pageIndex <= this.Model.TotalPages; pageIndex++)
+            {
+                bool isPageButtonActive = pageIndex == this.Model.CurrentPage;
+                string pageButtonActiveClass = isPageButtonActive ? "active" : "";
+
+                <li class="page-item @pageButtonActiveClass" aria-current="page">
+                    <a class="page-link" asp-action="Index" asp-route-page="@pageIndex">@pageIndex</a>
+                </li>
+            }
+
+            <li class="page-item @nextButtonDisabledClass">
+                <a class="page-link" asp-action="Index" asp-route-page="@nextPageIndex">Next</a>
+            </li>
+        </ul>
+    </nav>
 }
 else
 {
